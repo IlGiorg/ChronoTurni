@@ -1,0 +1,11 @@
+```
+fastapi
+uvicorn[standard]
+SQLAlchemy
+psycopg2-binary
+pydantic
+python-jose
+cryptography
+Jinja2
+weasyprint
+```
