@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Add Restriction</h3>
+<form method="POST">
+  <div class="mb-3">
+    <label>Employee</label>
+    <select name="employee" class="form-select" required>
+      {% for e in employees %}
+        <option value="{{ e.name }}">{{ e.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-3">
+    <label>Restriction (e.g. Monday-Morning)</label>
+    <input type="text" name="restriction" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Add</button>
+</form>
+{% endblock %}

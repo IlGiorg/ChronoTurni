@@ -1,13 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from shift_logic import ShiftManager
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+import io
 
 app = Flask(__name__)
-manager = ShiftManager()
+manager = ShiftManager()  # loads data automatically
 
 @app.route("/")
 def index():
     return render_template("index.html", manager=manager)
-
 
 @app.route("/add_employee", methods=["GET", "POST"])
 def add_employee():
@@ -38,8 +41,32 @@ def add_restriction():
 
 @app.route("/schedule")
 def schedule():
+    schedule_data, warnings = manager.generate_schedule()
+    return render_template("schedule.html", schedule=schedule_data, warnings=warnings)
+
+
+@app.route("/export_pdf")
+def export_pdf():
     schedule = manager.generate_schedule()
-    return render_template("schedule.html", schedule=schedule)
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    content = []
+
+    content.append(Paragraph("<b>Shift Schedule</b>", styles["Title"]))
+    content.append(Spacer(1, 12))
+
+    for shift_id, employees in schedule.items():
+        emp_names = ", ".join(e.name for e in employees)
+        line = f"{shift_id}: {emp_names}"
+        content.append(Paragraph(line, styles["Normal"]))
+        content.append(Spacer(1, 6))
+
+    doc.build(content)
+    buffer.seek(0)
+
+    return send_file(buffer, as_attachment=True, download_name="schedule.pdf", mimetype="application/pdf")
 
 if __name__ == "__main__":
     app.run(debug=True)

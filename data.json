@@ -1,0 +1,34 @@
+{
+    "employees": [
+        {
+            "name": "Giorgio",
+            "restrictions": [
+                "Friday-Night",
+                "Friday Night"
+            ]
+        },
+        {
+            "name": "Pietro",
+            "restrictions": []
+        },
+        {
+            "name": "Silvia",
+            "restrictions": []
+        },
+        {
+            "name": "Stefano",
+            "restrictions": []
+        },
+        {
+            "name": "Stefano2",
+            "restrictions": []
+        }
+    ],
+    "shifts": [
+        {
+            "day": "Friday",
+            "name": "Night",
+            "num_required": 5
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Generated Schedule</h3>
+<a href="{{ url_for('export_pdf') }}" class="btn btn-danger mb-3">Export as PDF</a>
+<table border="1" style="border-collapse: collapse; width: 100%; margin-top: 20px;">
+  <tr>
+    <th>Shift</th>
+    <th>Employees</th>
+  </tr>
+  {% for shift, employees in schedule.items() %}
+  <tr>
+    <td>{{ shift }}</td>
+    <td>
+      {% for e in employees %}
+        {{ e.name }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}
+{% if warnings %}
+<div class="alert alert-warning">
+  <ul>
+    {% for w in warnings %}
+      <li>{{ w }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
