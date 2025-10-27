@@ -1,31 +1,11 @@
-```yaml
-version: '3.8'
+version: "3.9"
+
 services:
-db:
-image: postgres:15
-environment:
-POSTGRES_USER: shiftmgr
-POSTGRES_PASSWORD: shiftmgr
-POSTGRES_DB: shiftmgr_db
-volumes:
-- db_data:/var/lib/postgresql/data
-ports:
-- "5432:5432"
-
-
-backend:
-build: ./backend
-depends_on:
-- db
-ports:
-- "8000:8000"
-volumes:
-- ./backend/app:/app
-environment:
-DATABASE_URL: postgresql+psycopg2://shiftmgr:shiftmgr@db:5432/shiftmgr_db
-LICENSE_PATH: /app/license.json
-
-
-volumes:
-db_data:
-```
+  api:
+    build: .
+    container_name: shift_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
