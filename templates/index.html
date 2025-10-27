@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Welcome to Shift Manager</h2>
+  <p>Use the navigation bar to manage employees, shifts, and restrictions.</p>
+  <hr>
+  <h4>Current Employees:</h4>
+  <ul>
+    {% for e in manager.employees %}
+      <li>{{ e.name }} – Restrictions: {{ e.restrictions|join(', ') if e.restrictions else 'None' }}</li>
+    {% endfor %}
+  </ul>
+
+  <h4>Current Shifts:</h4>
+  <ul>
+    {% for s in manager.shifts %}
+      <li>{{ s.day }} {{ s.name }} ({{ s.num_required }} required)</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
